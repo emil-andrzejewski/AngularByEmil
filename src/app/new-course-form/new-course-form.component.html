@@ -1,0 +1,22 @@
+<p>
+    Add topic by pressing 'Enter'. Then click it on the list below to remove it.
+</p>
+<form [formGroup]="form">
+    <!-- <input type="text" formControlName="name" placeholder="Name" class="form-control">
+    <div formGroupName="contact">
+        <input type="text" formControlName="email" placeholder="Email" class="form-control">
+        <input type="text" formControlName="phone" placeholder="Phone" class="form-control">
+    </div> -->
+    <input 
+        type="text" class="form-control" 
+        (keyup.enter)="addTopic(topic)" #topic 
+        placeholder="Add topic"
+    >
+    <ul class="list-group">
+        <li *ngFor="let topic of topics.controls; index as i" class="list-group-item"
+            (click)="remove(i)"
+        >
+            {{topic.value}}
+        </li>
+    </ul>
+</form>

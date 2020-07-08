@@ -1,67 +1,44 @@
 <header>
-  <nav
-    class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3"
-  >
+  <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom box-shadow">
     <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">Angular Test by Emil</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target=".navbar-collapse"
+      <a class="navbar-brand" routerLink="/">AngularByEmil</a>
+      <button 
+        class="navbar-toggler" 
+        type="button" 
+        data-toggle="collapse" 
+        data-target=".navbar-collapse" 
+        aria-controls="navbarText" 
         aria-label="Toggle navigation"
         [attr.aria-expanded]="isExpanded"
-        (click)="toggle()"
-      >
+        (click)="toggle()">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div
-        class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse"
-        [ngClass]="{ show: isExpanded }"
-      >
-        <ul class="navbar-nav flex-grow">
-          <li
-            class="nav-item"
-            [routerLinkActive]="['link-active']"
-            [routerLinkActiveOptions]="{ exact: true }"
-          >
-            <a class="nav-link text-dark" [routerLink]="['/']">Clients</a>
+      <div class="collapse navbar-collapse "
+           [ngClass]="{ show: isExpanded }">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item" >
+            <a class="nav-link" routerLink="/clients" (click)="collapse()" routerLinkActive="active">Clients</a>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/counter']"
-              >Counter</a
-            >
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/followers" (click)="collapse()" routerLinkActive="active">Followers</a>
           </li>
-          <li class="nav-item" [routerLinkActive]="['link-active']">
-            <a class="nav-link text-dark" [routerLink]="['/fetch-data']"
-              >Fetch data</a
-            >
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/newCourse" (click)="collapse()" routerLinkActive="active">New Course Form</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/addTopic" (click)="collapse()" routerLinkActive="active">Add topic</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/contact" (click)="collapse()" routerLinkActive="active">Contact</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/title-case" (click)="collapse()" routerLinkActive="active">Title Case</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/counter" (click)="collapse()" routerLinkActive="active">Counter</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
 </header>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <a class="navbar-brand" href="#">AngularByEmil</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarText">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="">Clients</a>
-      </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Features</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">Pricing</a>
-      </li>
-    </ul>
-    <span class="navbar-text">
-      Navbar text with an inline element
-    </span>
-  </div>
-</nav>

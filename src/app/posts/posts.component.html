@@ -1,0 +1,21 @@
+<h1>
+    Posts
+</h1>
+<p>
+    These posts were loaded from 
+    <a href="{{ getServiceUrl() }}">{{ getServiceUrl() }}</a>. 
+  </p>
+<div>
+    <div class="form-group">
+        <label for="addPost">Add Post</label>
+        <input type="text" (keyup.enter)="createPost(title)" #title class="form-control">
+    </div>
+    <ul class="list-group">
+        <li class="list-group-item" *ngFor="let post of posts, index as i">
+            <button (click)="update(post,i)" class="btn btn-primary btn-sm">Update</button> &nbsp;
+            <button (click)="delete(post,i)" class="btn btn-primary btn-sm">Delete</button>
+            {{ post.title }}
+        </li>
+    </ul>
+    
+</div>

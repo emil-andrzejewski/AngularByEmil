@@ -1,0 +1,29 @@
+<h1>Clients</h1>
+<p>
+    These clients were loaded from Azure SQL Database throught service 
+  <a href="{{ getServiceUrl() }}">{{ getServiceUrl() }}</a>. 
+</p>
+<p *ngIf="!klienci"><em>Loading...</em></p>
+<table class='table' *ngIf="klienci">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Company Name</th>
+      <th>Contact Name</th>
+      <th>City</th>
+      <th>Country</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let klient of klienci">
+      <td>{{ klient.customerID }}</td>
+      <td>{{ klient.companyName }}</td>
+      <td>{{ klient.contactName }}</td>
+      <td>{{ klient.city }}</td>
+      <td>{{ klient.country }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- {{klientZero.customerID}} -->
+

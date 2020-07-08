@@ -1,0 +1,19 @@
+<h1>Mosh Hamedani's Followers</h1>
+<p *ngIf="!followers"><em>Loading...</em></p>
+<div *ngIf="followers">
+  <p>
+    These followers were loaded from 
+    <a href="{{ getServiceUrl() }}">{{ getServiceUrl() }}</a>. 
+  </p>
+  <div class="media" *ngFor="let f of followers">
+    <img src="{{ f.avatar_url }}" class="avatar mr-3" alt="...">
+    <div class="media-body">
+      <h5 class="mt-0">
+        <a [routerLink]="['/followers', f.id, f.login]">
+          {{ f.login }}
+        </a>
+      </h5>
+      <a routerLink="{{ f.html_url }}">{{ f.html_url }}</a>
+    </div>
+  </div>
+</div>

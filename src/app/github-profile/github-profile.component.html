@@ -1,0 +1,51 @@
+<h1>{{ username }}</h1>
+<div>
+  <!-- {{ profile | json }} -->
+</div>
+
+<div class="media" *ngIf="!profile">
+  <p>Loading</p>
+</div>
+<div *ngIf="profile">
+  <p>
+    This profile was loaded from 
+    <a href="{{ getServiceUrl() }}">{{ getServiceUrl() }}</a>. 
+  </p>
+  <div class="media">
+    <img src="{{ profile.avatar_url }}" class="avatar mr-3" alt="...">
+    <div class="media-body">
+      <h5 class="mt-0">
+        <a href="{{ profile.html_url }}">{{ profile.html_url }}</a><br>
+      </h5>
+      <h5 class="mt-0">
+        <a href="{{ profile.url }}">Url: {{ profile.url }}</a>
+      </h5>
+      <h5 class="mt-0">
+        <a href="{{ profile.repos_url }}">Repositories: {{ profile.repos_url }}</a>
+      </h5>
+      <h5 class="mt-0">
+        <a href="{{ profile.followers_url }}">Followers: {{ profile.followers_url }}</a>
+      </h5>
+      <h5 class="mt-0">
+        <a href="{{ profile.subscriptions_url }}">Subscriptions: {{ profile.subscriptions_url }}</a>
+      </h5>
+      <h5 class="mt-0">
+        <a href="{{ profile.events_url }}">Events: {{ profile.events_url }}</a>
+      </h5>
+      <h5 class="mt-0">
+          Admin: {{ profile.site_admin? 'Yes' : 'No' }}
+      </h5>
+      <h5 class="mt-0">
+        Account created at: {{ profile.created_at }}
+      </h5>
+      <h5 class="mt-0">
+        Account updated at: {{ profile.updated_at }}
+      </h5>      
+
+    </div>
+  </div>
+</div>
+
+<br>
+
+<button class="btn btn-primary" (click)="previous()">Return</button>
