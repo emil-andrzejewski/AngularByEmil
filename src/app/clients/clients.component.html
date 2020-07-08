@@ -12,6 +12,7 @@
       <th>Contact Name</th>
       <th>City</th>
       <th>Country</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -21,6 +22,9 @@
       <td>{{ klient.contactName }}</td>
       <td>{{ klient.city }}</td>
       <td>{{ klient.country }}</td>
+      <td>
+        <a mat-button (click)="openDialog(klient)" color="primary">Edit</a>
+      </td>
     </tr>
   </tbody>
 </table>

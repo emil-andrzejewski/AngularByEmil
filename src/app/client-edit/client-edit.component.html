@@ -1,0 +1,37 @@
+<h2>Edit {{client.customerID}} customer</h2>
+<form #f>
+    <mat-form-field>
+        <mat-label>Company Name</mat-label>
+        <input matInput value="{{client.companyName}}">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Contact Name</mat-label>
+        <input matInput value="{{client.contactName}}">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Contact Title</mat-label>
+        <input matInput value="{{client.contactTitle}}">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Address</mat-label>
+        <input matInput value="{{client.address}}">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>City</mat-label>
+        <input matInput value="{{client.city}}">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Country</mat-label>
+        <input matInput value="{{client.country}}">
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Phone</mat-label>
+        <input matInput value="{{client.phone}}">
+    </mat-form-field>
+</form>
+<div mat-dialog-actions>
+    <button mat-raised-button (click)="onCancel()">Cancel</button> 
+    &nbsp; 
+    <button mat-raised-button color="primary" mat-dialog-close="confirm" cdkFocusInitial>Confirm</button>
+
+</div>

@@ -1,3 +1,5 @@
+import { ClientEditComponent } from './client-edit/client-edit.component';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { GithubProfileService } from './services/github-profile.service';
 import { TitleCasePipe } from './common/title-case.pipe';
 import { TitleCaseComponent } from './title-case/title-case.component';
@@ -20,6 +22,8 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
+import { MatSliderModule } from '@angular/material/slider';
+
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -28,7 +32,11 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ClientsComponent } from './clients/clients.component';
 import { PostsComponent } from './posts/posts.component';
-
+import { MatCheckboxModule } from '@angular/material/checkbox'
+import { MatDialogModule } from '@angular/material/dialog'; 
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field'; 
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -48,13 +56,21 @@ import { PostsComponent } from './posts/posts.component';
     SignupFormComponent,
     ContactFormComponent,
     TitleCaseComponent,
-    TitleCasePipe
+    TitleCasePipe,
+    ClientEditComponent
   ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    BrowserModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSliderModule,
+    MatCheckboxModule, 
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
     RouterModule.forRoot([
       { path: '', component: ClientsComponent},
       { path: 'clients', component: ClientsComponent },
