@@ -16,14 +16,14 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let klient of klienci">
+    <tr *ngFor="let klient of klienci; let i = index">
       <td>{{ klient.customerID }}</td>
       <td>{{ klient.companyName }}</td>
       <td>{{ klient.contactName }}</td>
       <td>{{ klient.city }}</td>
       <td>{{ klient.country }}</td>
       <td>
-        <a mat-button (click)="openDialog(klient)" color="primary">Edit</a>
+        <a mat-button (click)="openDialog(klient,i)" color="primary">Edit</a>
       </td>
     </tr>
   </tbody>

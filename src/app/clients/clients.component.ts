@@ -1,6 +1,7 @@
+import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ClientsService } from './../services/clients.service';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ClientEditComponent } from '../client-edit/client-edit.component';
 
 
@@ -9,9 +10,10 @@ import { ClientEditComponent } from '../client-edit/client-edit.component';
   templateUrl: './clients.component.html',
   styleUrls: ['./clients.component.css']
 })
-export class ClientsComponent implements OnInit {
+export class ClientsComponent implements OnInit, OnDestroy{
   public klienci: Klient[];
-  public klientZero;
+  private subscription1: Subscription;
+  private dialogSub: Subscription;
   
   constructor(
     private service: ClientsService,
@@ -19,27 +21,53 @@ export class ClientsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.service.getAll()
+    this.subscription1 = this.service.getAll()
       .subscribe(result => {
-        this.klienci = result as unknown as Klient[];
-        // console.log(this.klienci);
-        this.klientZero = this.klienci[0];
-        // console.log(this.klientZero);
-      }, error => console.error(error));
-    
+        this.klienci = JSON.parse(JSON.stringify(result));
+      }, error => console.error(error)); 
+  }
+
+  ngOnDestroy() {
+    this.subscription1.unsubscribe();
   }
 
   getServiceUrl() {
     return this.service.url;
   }
 
-  openDialog(client){
-    this.dialog.open(ClientEditComponent,
+  openDialog(client,i){
+    this.dialogSub = this.dialog.open(ClientEditComponent,
       {
         data: client
       })
       .afterClosed()
-      .subscribe(result => console.log(result));
+      .subscribe(result => {
+        if(result && result.status === 'clientEditFormIsValid') {
+          this.updateClient(result.clientEdited,i);
+        }
+        this.dialogSub.unsubscribe();
+      }, error => console.log('AfterClosedError',error));
+      ;
+  }
+
+  updateClient(clientEdited,i) {
+    let clientRecovery = JSON.parse(JSON.stringify(this.klienci[i]));
+    
+    let client = this.klienci[i]; //kopia referencji
+    client.companyName = clientEdited.companyName;
+    client.contactName = clientEdited.contactName;
+    client.contactTitle = clientEdited.contactTitle;
+    client.address = clientEdited.address;
+    client.city = clientEdited.city;
+    client.country = clientEdited.country;
+    client.phone = clientEdited.phone;
+    
+    this.service.update(client,client.customerID)
+      .subscribe(() => {},
+      error => {
+        console.log('errorUpdating',error);
+        this.klienci[i] = clientRecovery;
+      });
   }
 
     //constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
@@ -47,9 +75,6 @@ export class ClientsComponent implements OnInit {
     //    this.klienci = result as Klient[];
     //  }, error => console.error(error));
     //}
-    
-  
-
 }
 
 

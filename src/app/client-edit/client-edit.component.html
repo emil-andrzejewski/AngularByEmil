@@ -1,37 +1,43 @@
-<h2>Edit {{client.customerID}} customer</h2>
-<form #f>
+<h2>Edit customer: {{client.customerID}}</h2>
+<form [formGroup]="clientEditForm" *ngIf="client" (ngSubmit)="onSubmit()">
     <mat-form-field>
         <mat-label>Company Name</mat-label>
-        <input matInput value="{{client.companyName}}">
+        <input matInput formControlName="companyName" required>
     </mat-form-field>
     <mat-form-field>
         <mat-label>Contact Name</mat-label>
-        <input matInput value="{{client.contactName}}">
+        <input matInput formControlName="contactName" required>
     </mat-form-field>
     <mat-form-field>
         <mat-label>Contact Title</mat-label>
-        <input matInput value="{{client.contactTitle}}">
+        <input matInput formControlName="contactTitle">
     </mat-form-field>
     <mat-form-field>
         <mat-label>Address</mat-label>
-        <input matInput value="{{client.address}}">
+        <input matInput formControlName="address">
     </mat-form-field>
     <mat-form-field>
         <mat-label>City</mat-label>
-        <input matInput value="{{client.city}}">
+        <input matInput formControlName="city">
     </mat-form-field>
     <mat-form-field>
         <mat-label>Country</mat-label>
-        <input matInput value="{{client.country}}">
+        <input matInput formControlName="country">
     </mat-form-field>
     <mat-form-field>
         <mat-label>Phone</mat-label>
-        <input matInput value="{{client.phone}}">
+        <input matInput formControlName="phone">
     </mat-form-field>
+    <div mat-dialog-actions>
+        <button mat-raised-button mat-dialog-close="cancel">Cancel</button> 
+        &nbsp; 
+        <button 
+            mat-raised-button 
+            color="primary" 
+            mat-dialog-close="confirm" 
+            cdkFocusInitial
+            type="submit"
+            [disabled]="!clientEditFormIsValid()"
+        >Confirm</button>
+    </div>
 </form>
-<div mat-dialog-actions>
-    <button mat-raised-button (click)="onCancel()">Cancel</button> 
-    &nbsp; 
-    <button mat-raised-button color="primary" mat-dialog-close="confirm" cdkFocusInitial>Confirm</button>
-
-</div>

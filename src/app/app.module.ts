@@ -79,8 +79,9 @@ import { MatInputModule } from '@angular/material/input';
       { path: 'counter', component: CounterComponent },
       { path: 'posts', component: PostsComponent },
       { path: 'zippy', component: ZippyComponent },
-      { path: 'newCourse', component: CourseFormComponent },
-      { path: 'addTopic', component: NewCourseFormComponent },
+      { path: 'courseForm', component: CourseFormComponent },
+      { path: 'newCourseForm', component: NewCourseFormComponent },
+      { path: 'singUpForm', component: SignupFormComponent },
       { path: 'contact', component: ContactFormComponent },
       { path: 'title-case', component: TitleCaseComponent },      
       { path: '**', component: NotFoundError }

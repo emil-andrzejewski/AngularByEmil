@@ -8,7 +8,7 @@ import { UsernameValidators } from './username.validators';
   styleUrls: ['./signup-form.component.css']
 })
 export class SignupFormComponent {
-  form= new FormGroup({
+  form = new FormGroup({
     account: new FormGroup({
       username: new FormControl
       (

@@ -3,7 +3,7 @@ import { BadRequestError } from './../common/bad-request-error';
 import { NotFoundError } from './../common/not-found-error';
 import { HttpClient } from '@angular/common/http';
 import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators'
+import { catchError, map } from 'rxjs/operators'
 
 
 
@@ -14,21 +14,24 @@ export class DataService {
 
   getAll() {
     return this.http.get(this.url)
-      .pipe(catchError(this.handleError));
+      .pipe(
+        catchError(this.handleError)
+        // map(response => response.valueOf())
+      );
   }
 
-  getResourse(resource) {
-    return this.http.get(this.url+resource)
+  getResourse(id) {
+    return this.http.get(this.url + '/' + id)
       .pipe(catchError(this.handleError));
   }
 
   create(resource) {
-    return this.http.post(this.url,JSON.stringify(resource))
+    return this.http.post(this.url,resource)
       .pipe(catchError(this.handleError));
   }
 
-  update(resource) {
-    return this.http.patch(this.url + '/' + resource.id, JSON.stringify({isRead: true}))
+  update(resource,id) {
+    return this.http.put(this.url + '/' + id, resource)
       .pipe(catchError(this.handleError));
   }
 
