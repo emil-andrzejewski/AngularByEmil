@@ -39,16 +39,12 @@ export class ClientsComponent implements OnInit, OnDestroy{
   }
 
   openEditDialog(client,i){
-    this.dialogSub = this.dialog.open(ClientEditComponent,
-      {
-        data: client
-      })
+    this.dialogSub = this.dialog.open(ClientEditComponent,{data: client})
       .afterClosed()
       .subscribe(result => {
         if(result && result.status === 'clientEditFormIsValid') {
           this.updateClient(result.clientEdited,i);
         }
-        this.dialogSub.unsubscribe();
       }, error => console.log('AfterClosedError',error));
   }
 
@@ -65,7 +61,7 @@ export class ClientsComponent implements OnInit, OnDestroy{
     client.phone = clientEdited.phone;
     
     this.service.update(client.customerID,client)
-      .subscribe(() => {},
+      .subscribe(null,
       error => {
         console.log('errorUpdating',error);
         this.klienci[i] = clientRecovery;
@@ -87,7 +83,8 @@ export class ClientsComponent implements OnInit, OnDestroy{
 
     this.service.delete(id)
       .subscribe(
-        result => console.log(result),
+        //result => console.log(result),
+        null,
         error => {
           console.log('errorDeleting', error);
           this.klienci[i] = clientRecovery;

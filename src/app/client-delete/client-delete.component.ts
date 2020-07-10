@@ -8,9 +8,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 })
 export class ClientDeleteComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public clientID:any) {
-    console.log(clientID);
-   }
+  constructor(@Inject(MAT_DIALOG_DATA) public clientID:any) {}
 
   ngOnInit(): void {
   }
