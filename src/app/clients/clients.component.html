@@ -23,7 +23,10 @@
       <td>{{ klient.city }}</td>
       <td>{{ klient.country }}</td>
       <td>
-        <a mat-button (click)="openDialog(klient,i)" color="primary">Edit</a>
+        <a mat-button (click)="openEditDialog(klient,i)" color="primary">Edit</a>
+      </td>
+      <td>
+        <a mat-button (click)="openDeleteDialog(klient.customerID,i)" color="warn">Delete</a>
       </td>
     </tr>
   </tbody>

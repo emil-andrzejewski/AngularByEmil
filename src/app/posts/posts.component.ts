@@ -49,7 +49,7 @@ export class PostsComponent implements OnInit {
 
   update(post,index) {
     this.posts[index].isRead = true;
-    this.service.update(post,index) 
+    this.service.update(index,post) 
       .subscribe(
         response => {
           console.log(response);

@@ -1,8 +1,10 @@
+import { ClientDeleteComponent } from './../client-delete/client-delete.component';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ClientsService } from './../services/clients.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ClientEditComponent } from '../client-edit/client-edit.component';
+import { resourceUsage } from 'process';
 
 
 @Component({
@@ -24,6 +26,7 @@ export class ClientsComponent implements OnInit, OnDestroy{
     this.subscription1 = this.service.getAll()
       .subscribe(result => {
         this.klienci = JSON.parse(JSON.stringify(result));
+        console.log('Loaded '+ this.klienci.length + 'clients')
       }, error => console.error(error)); 
   }
 
@@ -35,7 +38,7 @@ export class ClientsComponent implements OnInit, OnDestroy{
     return this.service.url;
   }
 
-  openDialog(client,i){
+  openEditDialog(client,i){
     this.dialogSub = this.dialog.open(ClientEditComponent,
       {
         data: client
@@ -47,7 +50,6 @@ export class ClientsComponent implements OnInit, OnDestroy{
         }
         this.dialogSub.unsubscribe();
       }, error => console.log('AfterClosedError',error));
-      ;
   }
 
   updateClient(clientEdited,i) {
@@ -62,12 +64,35 @@ export class ClientsComponent implements OnInit, OnDestroy{
     client.country = clientEdited.country;
     client.phone = clientEdited.phone;
     
-    this.service.update(client,client.customerID)
+    this.service.update(client.customerID,client)
       .subscribe(() => {},
       error => {
         console.log('errorUpdating',error);
         this.klienci[i] = clientRecovery;
       });
+  }
+
+  openDeleteDialog(id,i){
+    this.dialog.open(ClientDeleteComponent,{data: id})
+    .afterClosed()
+    .subscribe(result => {
+      if(result==='deleteConfirmed') this.deleteCustomer(id,i);
+    });
+  }
+
+  deleteCustomer(id,i) {
+    let clientRecovery = JSON.parse(JSON.stringify(this.klienci[i]));
+
+    this.klienci.splice(i,1);  
+
+    this.service.delete(id)
+      .subscribe(
+        result => console.log(result),
+        error => {
+          console.log('errorDeleting', error);
+          this.klienci[i] = clientRecovery;
+        }
+      );
   }
 
     //constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {

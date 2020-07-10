@@ -22,7 +22,9 @@ export class ClientEditComponent implements OnInit {
     private dialog: MatDialogRef<ClientEditComponent>,
     @Inject(MAT_DIALOG_DATA) public client: any,
     private fb: FormBuilder
-  ) {}
+  ) {
+    console.log(client);
+  }
 
   ngOnInit(): void { }
 

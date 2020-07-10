@@ -29,12 +29,14 @@
         <input matInput formControlName="phone">
     </mat-form-field>
     <div mat-dialog-actions>
-        <button mat-raised-button mat-dialog-close="cancel">Cancel</button> 
+        <button 
+            mat-raised-button 
+            mat-dialog-close="cancel"
+        >Cancel</button> 
         &nbsp; 
         <button 
             mat-raised-button 
             color="primary" 
-            mat-dialog-close="confirm" 
             cdkFocusInitial
             type="submit"
             [disabled]="!clientEditFormIsValid()"

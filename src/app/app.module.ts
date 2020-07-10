@@ -1,3 +1,4 @@
+import { ClientDeleteComponent } from './client-delete/client-delete.component';
 import { ClientEditComponent } from './client-edit/client-edit.component';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { GithubProfileService } from './services/github-profile.service';
@@ -45,7 +46,6 @@ import { MatInputModule } from '@angular/material/input';
     HomeComponent,
     CounterComponent,
     FetchDataComponent,
-    ClientsComponent,
     GithubProfileComponent,
     FollowersComponent,
     PostsComponent,
@@ -57,7 +57,9 @@ import { MatInputModule } from '@angular/material/input';
     ContactFormComponent,
     TitleCaseComponent,
     TitleCasePipe,
-    ClientEditComponent
+    ClientsComponent,
+    ClientEditComponent,
+    ClientDeleteComponent
   ],
   imports: [
     BrowserModule,
