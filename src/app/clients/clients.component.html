@@ -1,9 +1,18 @@
 <h1>Clients</h1>
-<p>
-    These clients were loaded from Azure SQL Database throught service 
-  <a href="{{ getServiceUrl() }}">{{ getServiceUrl() }}</a>. 
-</p>
 <p *ngIf="!klienci"><em>Loading...</em></p>
+<div>
+  <p *ngIf="klienci">
+      These clients were loaded from Azure SQL Database throught service 
+    <a href="{{ getServiceUrl() }}">{{ getServiceUrl() }}</a>. 
+    <button 
+      mat-flat-button 
+      color="accent" 
+      style="float: right"
+      (click)="openCreateDialog()"  
+    >Add client</button>
+  </p>
+  
+</div>
 <table class='table' *ngIf="klienci">
   <thead>
     <tr>

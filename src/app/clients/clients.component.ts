@@ -1,10 +1,11 @@
+import { ClientCreateComponent } from './../client-create/client-create.component';
 import { ClientDeleteComponent } from './../client-delete/client-delete.component';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ClientsService } from './../services/clients.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ClientEditComponent } from '../client-edit/client-edit.component';
-import { resourceUsage } from 'process';
+import { Client } from './client';
 
 
 @Component({
@@ -13,9 +14,10 @@ import { resourceUsage } from 'process';
   styleUrls: ['./clients.component.css']
 })
 export class ClientsComponent implements OnInit, OnDestroy{
-  public klienci: Klient[];
+  public klienci: Client[];
   private subscription1: Subscription;
   private dialogSub: Subscription;
+  private tempClient: Client;
   
   constructor(
     private service: ClientsService,
@@ -26,8 +28,12 @@ export class ClientsComponent implements OnInit, OnDestroy{
     this.subscription1 = this.service.getAll()
       .subscribe(result => {
         this.klienci = JSON.parse(JSON.stringify(result));
-        console.log('Loaded '+ this.klienci.length + 'clients')
+        console.log('Loaded '+ this.klienci.length + ' clients');
       }, error => console.error(error)); 
+      
+    this.tempClient = new Client();
+    // console.log(this.tempClient);
+    // this.tempClient.emptyClient();
   }
 
   ngOnDestroy() {
@@ -45,11 +51,11 @@ export class ClientsComponent implements OnInit, OnDestroy{
         if(result && result.status === 'clientEditFormIsValid') {
           this.updateClient(result.clientEdited,i);
         }
-      }, error => console.log('AfterClosedError',error));
+      });
   }
 
   updateClient(clientEdited,i) {
-    let clientRecovery = JSON.parse(JSON.stringify(this.klienci[i]));
+    let clientRecovery = this.deepCopy(this.klienci[i]);
     
     let client = this.klienci[i]; //kopia referencji
     client.companyName = clientEdited.companyName;
@@ -65,6 +71,7 @@ export class ClientsComponent implements OnInit, OnDestroy{
       error => {
         console.log('errorUpdating',error);
         this.klienci[i] = clientRecovery;
+        alert('There was an error while updating client. Check console to get details');
       });
   }
 
@@ -77,39 +84,59 @@ export class ClientsComponent implements OnInit, OnDestroy{
   }
 
   deleteCustomer(id,i) {
-    let clientRecovery = JSON.parse(JSON.stringify(this.klienci[i]));
+    let clientRecovery = this.deepCopy(this.klienci[i]);
 
     this.klienci.splice(i,1);  
 
     this.service.delete(id)
       .subscribe(
-        //result => console.log(result),
         null,
         error => {
           console.log('errorDeleting', error);
           this.klienci[i] = clientRecovery;
+          alert('There was an error while deleting client. Check console to get details');
         }
       );
   }
 
+  deepCopy(ref: any) {
+    return JSON.parse(JSON.stringify(ref));
+  }
+
+  openCreateDialog(){
+    this.dialog.open(ClientCreateComponent,{data: this.tempClient}) //,{disableClose: true}
+      .afterClosed()
+      .subscribe(result => {
+        if(result.status==='confirm') {
+          this.createClient(this.deepCopy(result.client));
+        }
+        else {
+          this.tempClient = result.client;
+          // console.log('tempClient:',this.tempClient);
+        }
+        // dialogRef.unsubscribe();
+      });
+  }
+
+  createClient(newClient) {
+    this.klienci.splice(0,0,newClient);
+
+    this.service.create(newClient)
+      .subscribe(result =>{
+        // console.log('creating client', result);
+        this.tempClient.emptyClient();
+        // console.log('tempClient:',this.tempClient);
+      },error => {
+        console.log('creating error',error);
+        this.klienci.splice(0,1);
+      });
+
+  }
+
+
     //constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     //  http.get('https://localhost:5001/api/customers').subscribe(result => {
-    //    this.klienci = result as Klient[];
+    //    this.klienci = result as Client[];
     //  }, error => console.error(error));
     //}
-}
-
-
-interface Klient {
-  customerID: string;
-  companyName: string;
-  contactName: string;
-  contactTitle: string;
-  address: string;
-  city: string;
-  region: string;
-  postalCode: string;
-  country: string;
-  phone: string;
-  fax: string;
 }

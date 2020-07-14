@@ -15,8 +15,9 @@ export class ClientEditComponent implements OnInit {
     address: [this.client.address],
     city: [this.client.city],
     country: [this.client.country],
-    phone: [this.client.phone],
+    phone: [this.client.phone]
   });
+  
 
   constructor(
     private dialog: MatDialogRef<ClientEditComponent>,

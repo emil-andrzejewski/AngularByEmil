@@ -1,3 +1,4 @@
+import { AsyncClientIDValidator } from './validators/async-clientID.validator';
 import { ClientDeleteComponent } from './client-delete/client-delete.component';
 import { ClientEditComponent } from './client-edit/client-edit.component';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -38,6 +39,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field'; 
 import { MatInputModule } from '@angular/material/input';
+import { ClientCreateComponent } from './client-create/client-create.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +61,8 @@ import { MatInputModule } from '@angular/material/input';
     TitleCasePipe,
     ClientsComponent,
     ClientEditComponent,
-    ClientDeleteComponent
+    ClientDeleteComponent,
+    ClientCreateComponent
   ],
   imports: [
     BrowserModule,
@@ -76,6 +79,7 @@ import { MatInputModule } from '@angular/material/input';
     RouterModule.forRoot([
       { path: '', component: ClientsComponent},
       { path: 'clients', component: ClientsComponent },
+      { path: 'clientCreate', component: ClientCreateComponent },
       { path: 'followers/:id/:username', component: GithubProfileComponent },
       { path: 'followers', component: FollowersComponent },
       { path: 'counter', component: CounterComponent },
@@ -95,6 +99,7 @@ import { MatInputModule } from '@angular/material/input';
     PostService,
     ArchivesService,
     GithubProfileService,
+    AsyncClientIDValidator,
     { provide: ErrorHandler, useClass: AppErrorHandler } 
   ],
   bootstrap: [AppComponent]

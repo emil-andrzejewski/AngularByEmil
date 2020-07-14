@@ -3,8 +3,9 @@ import { AppError } from './../common/app-error';
 import { BadRequestError } from './../common/bad-request-error';
 import { NotFoundError } from './../common/not-found-error';
 import { HttpClient } from '@angular/common/http';
-import { throwError, observable, Observable } from 'rxjs';
+import { throwError, observable, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators'
+import { resourceUsage } from 'process';
 
 
 
@@ -43,6 +44,18 @@ export class DataService {
     // simulation error response from http
     // return this.http.delete('lalal')
     //   .pipe (catchError(this.handleError));
+  }
+
+  resourceExists(id): Observable<Object> {
+    return this.http.get(this.url + '/' + id)  
+      .pipe(
+        catchError(error => {
+          if(error.status===404) return of(null);
+          else return this.handleError;
+        }),
+        map(result=>{
+          return result ? { exists: true } : null;
+        }));
   }
 
   private handleError(error: Response) {
