@@ -1,14 +1,9 @@
-import { ErrorHandler } from '@angular/core';
 import { AppError } from './../common/app-error';
 import { BadRequestError } from './../common/bad-request-error';
 import { NotFoundError } from './../common/not-found-error';
 import { HttpClient } from '@angular/common/http';
-import { throwError, observable, Observable, of } from 'rxjs';
+import { throwError, Observable, of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators'
-import { resourceUsage } from 'process';
-
-
-
 
 export class DataService {
   constructor(public url: string, private http: HttpClient) {

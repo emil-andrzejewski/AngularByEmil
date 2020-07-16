@@ -25,6 +25,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatTableModule } from '@angular/material/table';
 
 
 import { AppComponent } from './app.component';
@@ -40,6 +41,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field'; 
 import { MatInputModule } from '@angular/material/input';
 import { ClientCreateComponent } from './client-create/client-create.component';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -76,10 +78,11 @@ import { ClientCreateComponent } from './client-create/client-create.component';
     MatButtonModule,
     MatFormFieldModule,
     MatInputModule,
+    MatTableModule,
+    MatSortModule,
     RouterModule.forRoot([
       { path: '', component: ClientsComponent},
       { path: 'clients', component: ClientsComponent },
-      { path: 'clientCreate', component: ClientCreateComponent },
       { path: 'followers/:id/:username', component: GithubProfileComponent },
       { path: 'followers', component: FollowersComponent },
       { path: 'counter', component: CounterComponent },

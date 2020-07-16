@@ -1,45 +1,61 @@
-<h1>Clients</h1>
-<p *ngIf="!klienci"><em>Loading...</em></p>
 <div>
-  <p *ngIf="klienci">
-      These clients were loaded from Azure SQL Database throught service 
-    <a href="{{ getServiceUrl() }}">{{ getServiceUrl() }}</a>. 
-    <button 
-      mat-flat-button 
-      color="accent" 
-      style="float: right"
-      (click)="openCreateDialog()"  
-    >Add client</button>
-  </p>
+    <h1>Clients</h1>
+    <div *ngIf="klienci" >
+      <button 
+        mat-flat-button 
+        color="accent" 
+        style="float: right"
+        (click)="openCreateDialog()"  
+      >Add client</button>
+    </div>
+  </div>
   
-</div>
-<table class='table' *ngIf="klienci">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Company Name</th>
-      <th>Contact Name</th>
-      <th>City</th>
-      <th>Country</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let klient of klienci; let i = index">
-      <td>{{ klient.customerID }}</td>
-      <td>{{ klient.companyName }}</td>
-      <td>{{ klient.contactName }}</td>
-      <td>{{ klient.city }}</td>
-      <td>{{ klient.country }}</td>
-      <td>
-        <a mat-button (click)="openEditDialog(klient,i)" color="primary">Edit</a>
+  <p *ngIf="!klienci"><em>Loading...</em></p>
+  <div>
+    <p *ngIf="klienci">
+        These clients were loaded from Azure SQL Database throught service 
+      <a href="{{ getServiceUrl() }}">{{ getServiceUrl() }}</a>. 
+    </p>
+  </div>
+  
+  <table mat-table [dataSource]="klienci" [hidden]="!klienci" matSort matSortActive="customerID" matSortDisableClear matSortDirection="asc">
+    <ng-container matColumnDef="customerID">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+      <td mat-cell *matCellDef="let client"> {{client.customerID}} </td>
+    </ng-container>
+    <ng-container matColumnDef="companyName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Company Name </th>
+      <td mat-cell *matCellDef="let client"> {{client.companyName}} </td>
+    </ng-container>
+    <ng-container matColumnDef="contactName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Contact Name </th>
+      <td mat-cell *matCellDef="let client"> {{client.contactName}} </td>
+    </ng-container>
+    <ng-container matColumnDef="city">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> City </th>
+      <td mat-cell *matCellDef="let client"> {{client.city}} </td>
+    </ng-container>
+    <ng-container matColumnDef="country">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Country </th>
+      <td mat-cell *matCellDef="let client"> {{client.country}} </td>
+    </ng-container>
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let client"> 
+        <a mat-button (click)="openEditDialog(client)" color="primary">Edit</a>
       </td>
-      <td>
-        <a mat-button (click)="openDeleteDialog(klient.customerID,i)" color="warn">Delete</a>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<!-- {{klientZero.customerID}} -->
-
+    </ng-container>
+    <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let client"> 
+            <a mat-button (click)="openDeleteDialog(client)" color="warn">Delete</a>    
+        </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
+  
+  
+  
