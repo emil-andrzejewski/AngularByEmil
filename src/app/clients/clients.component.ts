@@ -159,11 +159,12 @@ export class ClientsComponent implements OnInit, OnDestroy, AfterViewInit{
         this.klienci._updateChangeSubscription();
         alert('There was an error while creating client. Check console to get details');
       });
-
-    
   }
 
-
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.klienci.filter = filterValue.trim().toLowerCase();
+  }
     //constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     //  http.get('https://localhost:5001/api/customers').subscribe(result => {
     //    this.klienci = result as Client[];
