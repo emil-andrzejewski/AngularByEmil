@@ -1,5 +1,5 @@
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Client } from './../clients/client';
+import { Client } from '../clients/client';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { Component, OnInit, Inject } from '@angular/core';
 import { AsyncClientIDValidator } from '../validators/async-clientID.validator';

@@ -1,11 +1,13 @@
-import { ClientCreateComponent } from './../client-create/client-create.component';
-import { ClientDeleteComponent } from './../client-delete/client-delete.component';
+import { ClientCreateComponent } from '../client-create/client-create.component';
+import { ClientDeleteComponent } from '../client-delete/client-delete.component';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
-import { ClientsService } from './../services/clients.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ClientsService } from '../services/clients.service';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ClientEditComponent } from '../client-edit/client-edit.component';
 import { Client } from './client';
+import { MatSort } from '@angular/material/sort'
+import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
@@ -14,10 +16,12 @@ import { Client } from './client';
   styleUrls: ['./clients.component.css']
 })
 export class ClientsComponent implements OnInit, OnDestroy{
-  public klienci: Client[];
+  // public klienci: Client[];
+  public klienci: MatTableDataSource<Client>;
   private subscription1: Subscription;
-  private dialogSub: Subscription;
   private tempClient: Client;
+  public displayedColumns: string[] = ['customerID','companyName','contactName','city','country','edit','delete'];
+  @ViewChild (MatSort,{static: true}) sort: MatSort;
   
   constructor(
     private service: ClientsService,
@@ -27,8 +31,10 @@ export class ClientsComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.subscription1 = this.service.getAll()
       .subscribe(result => {
-        this.klienci = JSON.parse(JSON.stringify(result));
-        console.log('Loaded '+ this.klienci.length + ' clients');
+        // this.klienci = JSON.parse(JSON.stringify(result));
+        this.klienci = new MatTableDataSource(JSON.parse(JSON.stringify(result)))
+        this.klienci.sort = this.sort;
+        console.log('Loaded '+ this.klienci.data.length + ' clients');
       }, error => console.error(error)); 
       
     this.tempClient = new Client();
@@ -44,62 +50,72 @@ export class ClientsComponent implements OnInit, OnDestroy{
     return this.service.url;
   }
 
-  openEditDialog(client,i){
-    this.dialogSub = this.dialog.open(ClientEditComponent,{data: client})
+  openEditDialog(client){
+    this.dialog.open(ClientEditComponent,{data: client})
       .afterClosed()
       .subscribe(result => {
         if(result && result.status === 'clientEditFormIsValid') {
-          this.updateClient(result.clientEdited,i);
+          this.updateClient(client,result.clientEdited);
         }
       });
   }
 
-  updateClient(clientEdited,i) {
-    let clientRecovery = this.deepCopy(this.klienci[i]);
+  updateClient(clientToEdit: Client, newClient: Client) {
+    let index = this.klienci.data.indexOf(clientToEdit);
+    //  console.log('updateID',clientToEdit.customerID);
+    let clientRecovery = this.deepCopy(clientToEdit);
     
-    let client = this.klienci[i]; //kopia referencji
-    client.companyName = clientEdited.companyName;
-    client.contactName = clientEdited.contactName;
-    client.contactTitle = clientEdited.contactTitle;
-    client.address = clientEdited.address;
-    client.city = clientEdited.city;
-    client.country = clientEdited.country;
-    client.phone = clientEdited.phone;
+    let client: Client = this.klienci.data[index]; //kopia referencji
+    client.companyName = newClient.companyName;
+    client.contactName = newClient.contactName;
+    client.contactTitle = newClient.contactTitle;
+    client.address = newClient.address;
+    client.city = newClient.city;
+    client.country = newClient.country;
+    client.phone = newClient.phone;
+
+    this.klienci._updateChangeSubscription();
     
     this.service.update(client.customerID,client)
-      .subscribe(null,
-      error => {
-        console.log('errorUpdating',error);
-        this.klienci[i] = clientRecovery;
-        alert('There was an error while updating client. Check console to get details');
-      });
+      .subscribe(
+        null,
+        error => {
+          console.log('errorUpdating',error);
+          this.klienci.data[index] = this.deepCopy(clientRecovery);
+          this.klienci._updateChangeSubscription();
+          alert('There was an error while updating client. Check console to get details');
+        });
   }
 
-  openDeleteDialog(id,i){
-    this.dialog.open(ClientDeleteComponent,{data: id})
+  openDeleteDialog(client){
+    // console.log('deleteID',client.customerID);
+    this.dialog.open(ClientDeleteComponent,{data: client.customerID})
     .afterClosed()
     .subscribe(result => {
-      if(result==='deleteConfirmed') this.deleteCustomer(id,i);
+      if(result==='deleteConfirmed') this.deleteCustomer(client);
     });
   }
 
-  deleteCustomer(id,i) {
-    let clientRecovery = this.deepCopy(this.klienci[i]);
+  deleteCustomer(client) {
+    let index = this.klienci.data.indexOf(client);
+    let clientRecovery = this.deepCopy(this.klienci.data[index]);
+    this.klienci.data.splice(index,1);  
+    this.klienci._updateChangeSubscription();
 
-    this.klienci.splice(i,1);  
-
-    this.service.delete(id)
+    this.service.delete(client.customerID)
       .subscribe(
         null,
         error => {
           console.log('errorDeleting', error);
-          this.klienci[i] = clientRecovery;
+          this.klienci.data.push(clientRecovery);
+          this.klienci._updateChangeSubscription();
           alert('There was an error while deleting client. Check console to get details');
         }
       );
   }
 
   deepCopy(ref: any) {
+    // console.log('deepCopy',ref);
     return JSON.parse(JSON.stringify(ref));
   }
 
@@ -119,7 +135,8 @@ export class ClientsComponent implements OnInit, OnDestroy{
   }
 
   createClient(newClient) {
-    this.klienci.splice(0,0,newClient);
+    this.klienci.data.push(newClient);
+    this.klienci._updateChangeSubscription();
 
     this.service.create(newClient)
       .subscribe(result =>{
@@ -128,9 +145,13 @@ export class ClientsComponent implements OnInit, OnDestroy{
         // console.log('tempClient:',this.tempClient);
       },error => {
         console.log('creating error',error);
-        this.klienci.splice(0,1);
+        let index = this.klienci.data.indexOf(newClient);
+        this.klienci.data.splice(index,1);
+        this.klienci._updateChangeSubscription();
+        alert('There was an error while creating client. Check console to get details');
       });
 
+    
   }
 
 
