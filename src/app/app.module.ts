@@ -42,6 +42,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ClientCreateComponent } from './client-create/client-create.component';
 import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { MatSortModule } from '@angular/material/sort';
     MatInputModule,
     MatTableModule,
     MatSortModule,
+    MatPaginatorModule,
     RouterModule.forRoot([
       { path: '', component: ClientsComponent},
       { path: 'clients', component: ClientsComponent },

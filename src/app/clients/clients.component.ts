@@ -62,7 +62,7 @@ export class ClientsComponent implements OnInit, OnDestroy{
 
   updateClient(clientToEdit: Client, newClient: Client) {
     let index = this.klienci.data.indexOf(clientToEdit);
-     console.log('updateID',clientToEdit.customerID);
+    //  console.log('updateID',clientToEdit.customerID);
     let clientRecovery = this.deepCopy(clientToEdit);
     
     let client: Client = this.klienci.data[index]; //kopia referencji
