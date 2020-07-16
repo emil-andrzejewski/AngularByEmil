@@ -3,11 +3,12 @@ import { ClientDeleteComponent } from '../client-delete/client-delete.component'
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { ClientsService } from '../services/clients.service';
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { ClientEditComponent } from '../client-edit/client-edit.component';
 import { Client } from './client';
 import { MatSort } from '@angular/material/sort'
 import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 
 
 @Component({
@@ -15,13 +16,14 @@ import { MatTableDataSource } from '@angular/material/table';
   templateUrl: './clients.component.html',
   styleUrls: ['./clients.component.css']
 })
-export class ClientsComponent implements OnInit, OnDestroy{
+export class ClientsComponent implements OnInit, OnDestroy, AfterViewInit{
   // public klienci: Client[];
   public klienci: MatTableDataSource<Client>;
   private subscription1: Subscription;
   private tempClient: Client;
   public displayedColumns: string[] = ['customerID','companyName','contactName','city','country','edit','delete'];
   @ViewChild (MatSort,{static: true}) sort: MatSort;
+  @ViewChild (MatPaginator) paginator: MatPaginator;
   
   constructor(
     private service: ClientsService,
@@ -34,6 +36,7 @@ export class ClientsComponent implements OnInit, OnDestroy{
         // this.klienci = JSON.parse(JSON.stringify(result));
         this.klienci = new MatTableDataSource(JSON.parse(JSON.stringify(result)))
         this.klienci.sort = this.sort;
+        this.klienci.paginator = this.paginator;
         console.log('Loaded '+ this.klienci.data.length + ' clients');
       }, error => console.error(error)); 
       
@@ -44,6 +47,12 @@ export class ClientsComponent implements OnInit, OnDestroy{
 
   ngOnDestroy() {
     this.subscription1.unsubscribe();
+  }
+
+  ngAfterViewInit() {
+    this.sort.sortChange.subscribe(
+      () => this.paginator.pageIndex = 0
+    );
   }
 
   getServiceUrl() {

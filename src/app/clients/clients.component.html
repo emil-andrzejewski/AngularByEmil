@@ -10,13 +10,17 @@
     </div>
   </div>
   
-  <p *ngIf="!klienci"><em>Loading...</em></p>
-  <div>
-    <p *ngIf="klienci">
-        These clients were loaded from Azure SQL Database throught service 
+  <p *ngIf="!klienci">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>  
+    <em>Loading...</em>
+  </p>
+  <div *ngIf="klienci">
+    <p>
+      These clients were loaded from Azure SQL Database throught service 
       <a href="{{ getServiceUrl() }}">{{ getServiceUrl() }}</a>. 
     </p>
   </div>
+
   
   <table mat-table [dataSource]="klienci" [hidden]="!klienci" matSort matSortActive="customerID" matSortDisableClear matSortDirection="asc">
     <ng-container matColumnDef="customerID">
@@ -55,7 +59,13 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
-  
+
+  <mat-paginator
+    [hidden]="!klienci"
+    [length]="100"
+    [pageSize]="5"
+    [pageSizeOptions]="[5, 10, 25, 50, 100]">
+  </mat-paginator>
   
   
   
