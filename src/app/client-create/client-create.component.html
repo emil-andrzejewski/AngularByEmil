@@ -2,7 +2,7 @@
     <mat-dialog-content>
         <mat-form-field>
             <mat-label>Client ID</mat-label>
-            <input matInput formControlName="customerID" required cdkFocusInitial >
+            <input matInput formControlName="customerID" required cdkFocusInitial style="text-transform: uppercase">
             <mat-error
                 *ngIf="formControls().customerID.errors && formControls().customerID.touched"    
             >{{ customerIDErrorInfo() }}</mat-error>
