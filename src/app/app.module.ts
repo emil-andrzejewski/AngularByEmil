@@ -1,3 +1,4 @@
+import { MatComponentsModule } from './mat-components.module';
 import { AsyncClientIDValidator } from './validators/async-clientID.validator';
 import { ClientDeleteComponent } from './client-delete/client-delete.component';
 import { ClientEditComponent } from './client-edit/client-edit.component';
@@ -24,10 +25,6 @@ import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
-import { MatSliderModule } from '@angular/material/slider';
-import { MatTableModule } from '@angular/material/table';
-
-
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
@@ -35,14 +32,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ClientsComponent } from './clients/clients.component';
 import { PostsComponent } from './posts/posts.component';
-import { MatCheckboxModule } from '@angular/material/checkbox'
-import { MatDialogModule } from '@angular/material/dialog'; 
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field'; 
-import { MatInputModule } from '@angular/material/input';
 import { ClientCreateComponent } from './client-create/client-create.component';
-import { MatSortModule } from '@angular/material/sort';
-import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -72,16 +62,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    MatSliderModule,
-    MatCheckboxModule, 
     BrowserAnimationsModule,
-    MatDialogModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
+    MatComponentsModule,
     RouterModule.forRoot([
       { path: '', component: ClientsComponent},
       { path: 'clients', component: ClientsComponent },

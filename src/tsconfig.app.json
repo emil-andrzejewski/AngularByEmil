@@ -6,7 +6,10 @@
   },
   "exclude": [
     "src/test.ts",
-    "**/*.spec.ts",
-    "src/**/*.spec.ts"
+    "**/*.spec.ts"
+  ],
+  "files": [
+    "main.ts",
+    "polyfills.ts"
   ]
 }
